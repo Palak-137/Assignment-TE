@@ -1,0 +1,367 @@
+Enter password: ****
+Welcome to the MySQL monitor.  Commands end with ; or \g.
+Your MySQL connection id is 19
+Server version: 8.0.25 MySQL Community Server - GPL
+
+Copyright (c) 2000, 2021, Oracle and/or its affiliates.
+
+Oracle is a registered trademark of Oracle Corporation and/or its
+affiliates. Other names may be trademarks of their respective
+owners.
+
+Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+
+mysql> show databases;
++--------------------+
+| Database           |
++--------------------+
+| information_schema |
+| movie              |
+| mysql              |
+| performance_schema |
+| stud               |
+| sys                |
++--------------------+
+6 rows in set (0.01 sec)
+
+mysql> use movie;
+Database changed
+mysql>
+mysql>
+mysql> create table Director (
+    -> d_id varchar(20) PRIMARY KEY,
+    -> fname varchar(10) NOT NULL,
+    -> lname varchar(10) NOT NULL,
+    -> gender varchar(10) NOT NULL
+    -> );
+Query OK, 0 rows affected (0.09 sec)
+
+mysql>
+mysql> describe Director;
++--------+-------------+------+-----+---------+-------+
+| Field  | Type        | Null | Key | Default | Extra |
++--------+-------------+------+-----+---------+-------+
+| d_id   | varchar(20) | NO   | PRI | NULL    |       |
+| fname  | varchar(10) | NO   |     | NULL    |       |
+| lname  | varchar(10) | NO   |     | NULL    |       |
+| gender | varchar(10) | NO   |     | NULL    |       |
++--------+-------------+------+-----+---------+-------+
+4 rows in set (0.02 sec)
+
+mysql>
+mysql>
+mysql> insert into Director
+    -> values ('r1u2b3', 'Ruben', 'Fleischer', 'Male');
+Query OK, 1 row affected (0.01 sec)
+
+mysql>
+mysql>
+mysql> select * from Director;
++--------+-------+-----------+--------+
+| d_id   | fname | lname     | gender |
++--------+-------+-----------+--------+
+| r1u2b3 | Ruben | Fleischer | Male   |
++--------+-------+-----------+--------+
+1 row in set (0.01 sec)
+
+mysql> insert into Director
+    -> values ('c1o2r3', 'Corin', 'Hardy', 'Male');
+Query OK, 1 row affected (0.01 sec)
+
+mysql>
+mysql> select * from Director;
++--------+-------+-----------+--------+
+| d_id   | fname | lname     | gender |
++--------+-------+-----------+--------+
+| c1o2r3 | Corin | Hardy     | Male   |
+| r1u2b3 | Ruben | Fleischer | Male   |
++--------+-------+-----------+--------+
+2 rows in set (0.00 sec)
+
+mysql>
+mysql>
+mysql>
+mysql> create table Movie (
+    -> m_id varchar(20) NOT NULL PRIMARY KEY,
+    -> title varchar(30) NOT NULL,
+    -> release_date date NOT NULL,
+    -> m_rank int NOT NULL
+    -> );
+Query OK, 0 rows affected (0.06 sec)
+
+mysql>
+mysql>
+mysql> select * from Movie;
+Empty set (0.02 sec)
+
+mysql>
+mysql>
+mysql> insert into Movie
+    -> values ('v1e2n3', 'Venom', '2018-10-5', 2);
+Query OK, 1 row affected (0.02 sec)
+
+mysql> insert into Movie
+    -> values ('t1h2e3', 'The Nun', '2018-9-7', 1);
+Query OK, 1 row affected (0.02 sec)
+
+mysql>
+mysql>
+mysql> select * from Movie;
++--------+---------+--------------+--------+
+| m_id   | title   | release_date | m_rank |
++--------+---------+--------------+--------+
+| t1h2e3 | The Nun | 2018-09-07   |      1 |
+| v1e2n3 | Venom   | 2018-10-05   |      2 |
++--------+---------+--------------+--------+
+2 rows in set (0.00 sec)
+
+mysql>
+mysql>
+mysql>
+mysql> select * from Director;
++--------+-------+-----------+--------+
+| d_id   | fname | lname     | gender |
++--------+-------+-----------+--------+
+| c1o2r3 | Corin | Hardy     | Male   |
+| r1u2b3 | Ruben | Fleischer | Male   |
++--------+-------+-----------+--------+
+2 rows in set (0.01 sec)
+
+mysql> insert into Movie
+    -> values ('g1o2d3', 'God', '2018-10-6', 3);
+Query OK, 1 row affected (0.02 sec)
+
+mysql> insert into Movie
+    -> values ('b1l2e3', 'Bless', '2018-10-7', 4);
+Query OK, 1 row affected (0.02 sec)
+
+mysql> insert into Movie
+    -> values ('y1o2u3', 'You', '2018-10-8', 4);
+Query OK, 1 row affected (0.01 sec)
+
+mysql>
+mysql>
+mysql> select * from Movie;
++--------+---------+--------------+--------+
+| m_id   | title   | release_date | m_rank |
++--------+---------+--------------+--------+
+| b1l2e3 | Bless   | 2018-10-07   |      4 |
+| g1o2d3 | God     | 2018-10-06   |      3 |
+| t1h2e3 | The Nun | 2018-09-07   |      1 |
+| v1e2n3 | Venom   | 2018-10-05   |      2 |
+| y1o2u3 | You     | 2018-10-08   |      4 |
++--------+---------+--------------+--------+
+5 rows in set (0.00 sec)
+
+mysql> update Movie
+    -> set m_rank = 5
+    -> where m_id = 'y1o2u3';
+Query OK, 1 row affected (0.01 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql>
+mysql>
+mysql> select * from Movie;
++--------+---------+--------------+--------+
+| m_id   | title   | release_date | m_rank |
++--------+---------+--------------+--------+
+| b1l2e3 | Bless   | 2018-10-07   |      4 |
+| g1o2d3 | God     | 2018-10-06   |      3 |
+| t1h2e3 | The Nun | 2018-09-07   |      1 |
+| v1e2n3 | Venom   | 2018-10-05   |      2 |
+| y1o2u3 | You     | 2018-10-08   |      5 |
++--------+---------+--------------+--------+
+5 rows in set (0.00 sec)
+
+mysql>
+mysql>
+mysql> alter table Movie
+    -> add rating int NOT NULL;
+Query OK, 0 rows affected (0.06 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql>
+mysql>
+mysql> select * from Movie;
++--------+---------+--------------+--------+--------+
+| m_id   | title   | release_date | m_rank | rating |
++--------+---------+--------------+--------+--------+
+| b1l2e3 | Bless   | 2018-10-07   |      4 |      0 |
+| g1o2d3 | God     | 2018-10-06   |      3 |      0 |
+| t1h2e3 | The Nun | 2018-09-07   |      1 |      0 |
+| v1e2n3 | Venom   | 2018-10-05   |      2 |      0 |
+| y1o2u3 | You     | 2018-10-08   |      5 |      0 |
++--------+---------+--------------+--------+--------+
+5 rows in set (0.01 sec)
+
+mysql>
+mysql>
+mysql> alter table Movie
+    -> drop rating;
+Query OK, 0 rows affected (0.09 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql>
+mysql>
+mysql>
+mysql> select * from Movie;
++--------+---------+--------------+--------+
+| m_id   | title   | release_date | m_rank |
++--------+---------+--------------+--------+
+| b1l2e3 | Bless   | 2018-10-07   |      4 |
+| g1o2d3 | God     | 2018-10-06   |      3 |
+| t1h2e3 | The Nun | 2018-09-07   |      1 |
+| v1e2n3 | Venom   | 2018-10-05   |      2 |
+| y1o2u3 | You     | 2018-10-08   |      5 |
++--------+---------+--------------+--------+
+5 rows in set (0.01 sec)
+
+mysql>
+mysql>
+mysql>
+mysql>
+mysql> create table Direct (
+    -> m_id varchar(20) NOT NULL,
+    -> d_id varchar(20) NOT NULL,
+    -> FOREIGN KEY (m_id) REFERENCES Movie (m_id)
+    -> );
+Query OK, 0 rows affected (0.07 sec)
+
+mysql>
+mysql> insert into Direct
+    -> values ('v1e2n3', 'r1u2b3');
+Query OK, 1 row affected (0.02 sec)
+
+mysql>
+mysql> insert into Direct
+    -> values ('t1h2e3', 'c1o2r3');
+Query OK, 1 row affected (0.02 sec)
+
+mysql>
+mysql>
+mysql> select * from Direct ;
++--------+--------+
+| m_id   | d_id   |
++--------+--------+
+| v1e2n3 | r1u2b3 |
+| t1h2e3 | c1o2r3 |
++--------+--------+
+2 rows in set (0.01 sec)
+
+mysql>
+mysql>
+mysql> alter table Direct
+    -> add FOREIGN KEY (d_id) REFERENCES Director (d_id);
+Query OK, 2 rows affected (0.15 sec)
+Records: 2  Duplicates: 0  Warnings: 0
+
+mysql>
+mysql>
+mysql> describe Direct
+    -> ;
++-------+-------------+------+-----+---------+-------+
+| Field | Type        | Null | Key | Default | Extra |
++-------+-------------+------+-----+---------+-------+
+| m_id  | varchar(20) | NO   | MUL | NULL    |       |
+| d_id  | varchar(20) | NO   | MUL | NULL    |       |
++-------+-------------+------+-----+---------+-------+
+2 rows in set (0.02 sec)
+
+mysql> describe Movie;
++--------------+-------------+------+-----+---------+-------+
+| Field        | Type        | Null | Key | Default | Extra |
++--------------+-------------+------+-----+---------+-------+
+| m_id         | varchar(20) | NO   | PRI | NULL    |       |
+| title        | varchar(30) | NO   |     | NULL    |       |
+| release_date | date        | NO   |     | NULL    |       |
+| m_rank       | int         | NO   |     | NULL    |       |
++--------------+-------------+------+-----+---------+-------+
+4 rows in set (0.01 sec)
+
+mysql> describe Director;
++--------+-------------+------+-----+---------+-------+
+| Field  | Type        | Null | Key | Default | Extra |
++--------+-------------+------+-----+---------+-------+
+| d_id   | varchar(20) | NO   | PRI | NULL    |       |
+| fname  | varchar(10) | NO   |     | NULL    |       |
+| lname  | varchar(10) | NO   |     | NULL    |       |
+| gender | varchar(10) | NO   |     | NULL    |       |
++--------+-------------+------+-----+---------+-------+
+4 rows in set (0.00 sec)
+
+mysql>
+mysql>
+mysql>
+mysql> create table Actor (
+    -> a_id varchar(20) NOT NULL PRIMARY KEY,
+    -> fname varchar(10) NOT NULL,
+    -> lname varchar(10) NOT NULL
+    -> );
+Query OK, 0 rows affected (0.05 sec)
+
+mysql>
+mysql>
+mysql> show tables;
++-----------------+
+| Tables_in_movie |
++-----------------+
+| actor           |
+| direct          |
+| director        |
+| movie           |
++-----------------+
+4 rows in set (0.01 sec)
+
+mysql>
+mysql>
+mysql> insert into actor
+    -> values ('t1o2m3', 'Tom','Cruise');
+Query OK, 1 row affected (0.02 sec)
+
+mysql>
+mysql>
+mysql> insert into actor
+    -> values ('k1e2a3', 'Keanu','Reeves');
+Query OK, 1 row affected (0.02 sec)
+
+mysql>
+mysql>
+mysql> show tables;
++-----------------+
+| Tables_in_movie |
++-----------------+
+| actor           |
+| direct          |
+| director        |
+| movie           |
++-----------------+
+4 rows in set (0.02 sec)
+
+mysql> select * from Actor;
++--------+-------+--------+
+| a_id   | fname | lname  |
++--------+-------+--------+
+| k1e2a3 | Keanu | Reeves |
+| t1o2m3 | Tom   | Cruise |
++--------+-------+--------+
+2 rows in set (0.00 sec)
+
+mysql> create table Cast (
+    -> m_id varchar(20) NOT NULL,
+    -> a_id varchar(20) NOT NULL,
+    -> role varchar(20) NOT NULL,
+    -> FOREIGN KEY (m_id) REFERENCES Movie (m_id)
+    -> );
+Query OK, 0 rows affected (0.08 sec)
+
+mysql>
+mysql> alter table Cast
+    -> add FOREIGN KEY (a_id) REFERENCES Actor (a_id);
+Query OK, 0 rows affected (0.13 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql>
+mysql>
+mysql> select * from Cast ;
+Empty set (0.00 sec)
+mysql>

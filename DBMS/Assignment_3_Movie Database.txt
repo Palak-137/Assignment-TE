@@ -1,0 +1,388 @@
+Enter password: ****
+Welcome to the MySQL monitor.  Commands end with ; or \g.
+Your MySQL connection id is 10
+Server version: 8.0.25 MySQL Community Server - GPL
+
+Copyright (c) 2000, 2021, Oracle and/or its affiliates.
+
+Oracle is a registered trademark of Oracle Corporation and/or its
+affiliates. Other names may be trademarks of their respective
+owners.
+
+Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+
+mysql> show databases;
++--------------------+
+| Database           |
++--------------------+
+| information_schema |
+| movie              |
+| mysql              |
+| performance_schema |
+| stud               |
+| sys                |
++--------------------+
+6 rows in set (0.04 sec)
+
+mysql> use movie;
+Database changed
+mysql>
+mysql> show tables;
++-----------------+
+| Tables_in_movie |
++-----------------+
+| actor           |
+| cast            |
+| corin_m_id      |
+| corin_movie     |
+| direct          |
+| director        |
+| movie           |
+| rating          |
+| yash_movies     |
++-----------------+
+9 rows in set (0.03 sec)
+
+mysql> select * from movie order by m_rank asc;
++--------+------------+--------------+--------+
+| m_id   | title      | release_date | m_rank |
++--------+------------+--------------+--------+
+| t1h2e3 | The Nun    | 2018-09-07   |      1 |
+| v1e2n3 | Venom      | 2018-10-05   |      2 |
+| g1o2d3 | God        | 2018-10-06   |      3 |
+| b1l2e3 | Bless      | 2018-10-07   |      4 |
+| y1o2u3 | You        | 2018-10-08   |      5 |
+| sho123 | Sholay     | 1909-01-01   |      6 |
+| ram123 | Ram-Lakhan | 1991-02-03   |      7 |
+| dan123 | Dangal     | 2018-09-09   |      8 |
+| pk_123 | PK         | 2017-04-09   |      9 |
+| war123 | War        | 2019-04-09   |     10 |
++--------+------------+--------------+--------+
+10 rows in set (0.00 sec)
+
+mysql> insert into movie values ('k3g123', 'K3G', '1909-01-02', 11);
+Query OK, 1 row affected (0.00 sec)
+
+mysql> select * from movie order by m_rank asc;
++--------+------------+--------------+--------+
+| m_id   | title      | release_date | m_rank |
++--------+------------+--------------+--------+
+| t1h2e3 | The Nun    | 2018-09-07   |      1 |
+| v1e2n3 | Venom      | 2018-10-05   |      2 |
+| g1o2d3 | God        | 2018-10-06   |      3 |
+| b1l2e3 | Bless      | 2018-10-07   |      4 |
+| y1o2u3 | You        | 2018-10-08   |      5 |
+| sho123 | Sholay     | 1909-01-01   |      6 |
+| ram123 | Ram-Lakhan | 1991-02-03   |      7 |
+| dan123 | Dangal     | 2018-09-09   |      8 |
+| pk_123 | PK         | 2017-04-09   |      9 |
+| war123 | War        | 2019-04-09   |     10 |
+| k3g123 | K3G        | 1909-01-02   |     11 |
++--------+------------+--------------+--------+
+11 rows in set (0.00 sec)
+
+mysql>
+mysql> select * from actor
+    -> ;
++--------+---------+----------+----------+
+| a_id   | fname   | lname    | Pay      |
++--------+---------+----------+----------+
+| ami123 | Amitabh | Bachchan | 10060000 |
+| k1e2a3 | Keanu   | Reeves   |    60000 |
+| kha123 | Amir    | Khan     | 50000000 |
+| rit123 | Rithik  | Roshan   | 90000000 |
+| san123 | Sanjeev | Kumar    | 10060000 |
+| t1o2m3 | Tom     | Cruise   |    60000 |
++--------+---------+----------+----------+
+6 rows in set (0.00 sec)
+
+mysql> select * from cast;
++--------+--------+---------+
+| m_id   | a_id   | role    |
++--------+--------+---------+
+| g1o2d3 | t1o2m3 | pilot   |
+| b1l2e3 | k1e2a3 | killer  |
+| sho123 | ami123 | cop     |
+| sho123 | san123 | cop     |
+| ram123 | t1o2m3 | tree    |
+| ram123 | k1e2a3 | gun     |
+| war123 | rit123 | Soldier |
+| dan123 | kha123 | wresler |
+| pk_123 | kha123 | alien   |
++--------+--------+---------+
+9 rows in set (0.00 sec)
+
+mysql>
+mysql> insert into actor ('sha123', 'Sharuk', 'Khan', '50000000');
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near ''sha123', 'Sharuk', 'Khan', '50000000')' at line 1
+mysql> insert into actor ('sha123', 'Sharuk', 'Khan', 50000000);
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near ''sha123', 'Sharuk', 'Khan', 50000000)' at line 1
+mysql>
+mysql>
+mysql> insert into actor values ('sha123', 'Sharuk', 'Khan', '50000000');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> insert into actor values ('kar123', 'Kareena', 'Kapoor', '20000000');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> insert into actor values ('kar123', 'Kajol', '20000000');
+ERROR 1136 (21S01): Column count doesn't match value count at row 1
+mysql> insert into actor values ('kar123', 'Kajol', '', '20000000');
+ERROR 1062 (23000): Duplicate entry 'kar123' for key 'actor.PRIMARY'
+mysql>
+mysql>
+mysql> insert into actor values ('kar123', 'Kajol', ' ', '20000000');
+ERROR 1062 (23000): Duplicate entry 'kar123' for key 'actor.PRIMARY'
+mysql>
+mysql>
+mysql> select * from actor;
++--------+---------+----------+----------+
+| a_id   | fname   | lname    | Pay      |
++--------+---------+----------+----------+
+| ami123 | Amitabh | Bachchan | 10060000 |
+| k1e2a3 | Keanu   | Reeves   |    60000 |
+| kar123 | Kareena | Kapoor   | 20000000 |
+| kha123 | Amir    | Khan     | 50000000 |
+| rit123 | Rithik  | Roshan   | 90000000 |
+| san123 | Sanjeev | Kumar    | 10060000 |
+| sha123 | Sharuk  | Khan     | 50000000 |
+| t1o2m3 | Tom     | Cruise   |    60000 |
++--------+---------+----------+----------+
+8 rows in set (0.00 sec)
+
+mysql>
+mysql> insert into actor values ('kaj123', 'Kajol', ' ', '20000000');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> select * from actor;
++--------+---------+----------+----------+
+| a_id   | fname   | lname    | Pay      |
++--------+---------+----------+----------+
+| ami123 | Amitabh | Bachchan | 10060000 |
+| k1e2a3 | Keanu   | Reeves   |    60000 |
+| kaj123 | Kajol   |          | 20000000 |
+| kar123 | Kareena | Kapoor   | 20000000 |
+| kha123 | Amir    | Khan     | 50000000 |
+| rit123 | Rithik  | Roshan   | 90000000 |
+| san123 | Sanjeev | Kumar    | 10060000 |
+| sha123 | Sharuk  | Khan     | 50000000 |
+| t1o2m3 | Tom     | Cruise   |    60000 |
++--------+---------+----------+----------+
+9 rows in set (0.00 sec)
+
+mysql> select * from cast;
++--------+--------+---------+
+| m_id   | a_id   | role    |
++--------+--------+---------+
+| g1o2d3 | t1o2m3 | pilot   |
+| b1l2e3 | k1e2a3 | killer  |
+| sho123 | ami123 | cop     |
+| sho123 | san123 | cop     |
+| ram123 | t1o2m3 | tree    |
+| ram123 | k1e2a3 | gun     |
+| war123 | rit123 | Soldier |
+| dan123 | kha123 | wresler |
+| pk_123 | kha123 | alien   |
++--------+--------+---------+
+9 rows in set (0.00 sec)
+
+mysql> insert into cast values ('k3g123', 'ami123', 'grandpa');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> insert into cast values ('k3g123', 'sha123', 'rebel');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> insert into cast values ('k3g123', 'rit123', 'son');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> insert into cast values ('k3g123', 'kaj123', 'bride');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> insert into cast values ('k3g123', 'kar123', 'bride');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> select * from cast;
++--------+--------+---------+
+| m_id   | a_id   | role    |
++--------+--------+---------+
+| g1o2d3 | t1o2m3 | pilot   |
+| b1l2e3 | k1e2a3 | killer  |
+| sho123 | ami123 | cop     |
+| sho123 | san123 | cop     |
+| ram123 | t1o2m3 | tree    |
+| ram123 | k1e2a3 | gun     |
+| war123 | rit123 | Soldier |
+| dan123 | kha123 | wresler |
+| pk_123 | kha123 | alien   |
+| k3g123 | ami123 | grandpa |
+| k3g123 | sha123 | rebel   |
+| k3g123 | rit123 | son     |
+| k3g123 | kaj123 | bride   |
+| k3g123 | kar123 | bride   |
++--------+--------+---------+
+14 rows in set (0.00 sec)
+
+mysql> select actor.fname, actor.lname from actor
+    -> , cast
+    -> where actor.a_id in (select cast.a_id
+    -> from cast
+    -> where cast.m_id in('sho123', 'k3g123'));
++---------+----------+
+| fname   | lname    |
++---------+----------+
+| Sharuk  | Khan     |
+| Sanjeev | Kumar    |
+| Rithik  | Roshan   |
+| Kareena | Kapoor   |
+| Kajol   |          |
+| Amitabh | Bachchan |
+| Sharuk  | Khan     |
+| Sanjeev | Kumar    |
+| Rithik  | Roshan   |
+| Kareena | Kapoor   |
+| Kajol   |          |
+| Amitabh | Bachchan |
+| Sharuk  | Khan     |
+| Sanjeev | Kumar    |
+| Rithik  | Roshan   |
+| Kareena | Kapoor   |
+| Kajol   |          |
+| Amitabh | Bachchan |
+| Sharuk  | Khan     |
+| Sanjeev | Kumar    |
+| Rithik  | Roshan   |
+| Kareena | Kapoor   |
+| Kajol   |          |
+| Amitabh | Bachchan |
+| Sharuk  | Khan     |
+| Sanjeev | Kumar    |
+| Rithik  | Roshan   |
+| Kareena | Kapoor   |
+| Kajol   |          |
+| Amitabh | Bachchan |
+| Sharuk  | Khan     |
+| Sanjeev | Kumar    |
+| Rithik  | Roshan   |
+| Kareena | Kapoor   |
+| Kajol   |          |
+| Amitabh | Bachchan |
+| Sharuk  | Khan     |
+| Sanjeev | Kumar    |
+| Rithik  | Roshan   |
+| Kareena | Kapoor   |
+| Kajol   |          |
+| Amitabh | Bachchan |
+| Sharuk  | Khan     |
+| Sanjeev | Kumar    |
+| Rithik  | Roshan   |
+| Kareena | Kapoor   |
+| Kajol   |          |
+| Amitabh | Bachchan |
+| Sharuk  | Khan     |
+| Sanjeev | Kumar    |
+| Rithik  | Roshan   |
+| Kareena | Kapoor   |
+| Kajol   |          |
+| Amitabh | Bachchan |
+| Sharuk  | Khan     |
+| Sanjeev | Kumar    |
+| Rithik  | Roshan   |
+| Kareena | Kapoor   |
+| Kajol   |          |
+| Amitabh | Bachchan |
+| Sharuk  | Khan     |
+| Sanjeev | Kumar    |
+| Rithik  | Roshan   |
+| Kareena | Kapoor   |
+| Kajol   |          |
+| Amitabh | Bachchan |
+| Sharuk  | Khan     |
+| Sanjeev | Kumar    |
+| Rithik  | Roshan   |
+| Kareena | Kapoor   |
+| Kajol   |          |
+| Amitabh | Bachchan |
+| Sharuk  | Khan     |
+| Sanjeev | Kumar    |
+| Rithik  | Roshan   |
+| Kareena | Kapoor   |
+| Kajol   |          |
+| Amitabh | Bachchan |
+| Sharuk  | Khan     |
+| Sanjeev | Kumar    |
+| Rithik  | Roshan   |
+| Kareena | Kapoor   |
+| Kajol   |          |
+| Amitabh | Bachchan |
++---------+----------+
+84 rows in set (0.01 sec)
+
+mysql> select actor.fname, actor.lname from actor
+    -> , cast
+    -> where actor.a_id = ^Z^C
+mysql>
+mysql>
+mysql> select actor.fname, actor.lname from actor
+    -> , cast
+    -> where actor.a_id = cast.a_id and cast.m_id in (select
+    -> movie.m_id
+    -> from movie
+    -> where movie.title in ('Sholay', 'K3G'));
++---------+----------+
+| fname   | lname    |
++---------+----------+
+| Amitabh | Bachchan |
+| Sharuk  | Khan     |
+| Rithik  | Roshan   |
+| Kajol   |          |
+| Kareena | Kapoor   |
+| Amitabh | Bachchan |
+| Sanjeev | Kumar    |
++---------+----------+
+7 rows in set (0.01 sec)
+
+mysql>
+mysql> select distinct actor.fname, actor.lname from actor
+    -> , cast
+    -> where actor.a_id = cast.a_id and cast.m_id in (select
+    -> movie.m_id
+    -> from movie
+    -> where movie.title in ('Sholay', 'K3G'));
++---------+----------+
+| fname   | lname    |
++---------+----------+
+| Amitabh | Bachchan |
+| Sharuk  | Khan     |
+| Rithik  | Roshan   |
+| Kajol   |          |
+| Kareena | Kapoor   |
+| Sanjeev | Kumar    |
++---------+----------+
+6 rows in set (0.01 sec)
+
+mysql>
+mysql> select * from director;
++--------+-------+-----------+--------+
+| d_id   | fname | lname     | gender |
++--------+-------+-----------+--------+
+| c1o2r3 | Corin | Hardy     | Male   |
+| cor123 | Corin | Hardy     | Male   |
+| r1u2b3 | Ruben | Fleischer | Male   |
+| rub123 | Ruben | Fleischer | Male   |
+| yas123 | Yash  | Chopra    | Male   |
++--------+-------+-----------+--------+
+5 rows in set (0.16 sec)
+
+mysql> select * from direct;
++--------+--------+
+| m_id   | d_id   |
++--------+--------+
+| v1e2n3 | yas123 |
+| t1h2e3 | c1o2r3 |
+| y1o2u3 | yas123 |
+| b1l2e3 | r1u2b3 |
+| g1o2d3 | c1o2r3 |
++--------+--------+
+5 rows in set (0.02 sec)
+
+mysql>

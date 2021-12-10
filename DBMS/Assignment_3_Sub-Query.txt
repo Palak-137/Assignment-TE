@@ -1,0 +1,477 @@
+Enter password: ****
+Welcome to the MySQL monitor.  Commands end with ; or \g.
+Your MySQL connection id is 8
+Server version: 8.0.25 MySQL Community Server - GPL
+
+Copyright (c) 2000, 2021, Oracle and/or its affiliates.
+
+Oracle is a registered trademark of Oracle Corporation and/or its
+affiliates. Other names may be trademarks of their respective
+owners.
+
+Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+
+mysql> show databases;
++--------------------+
+| Database           |
++--------------------+
+| information_schema |
+| movie              |
+| mysql              |
+| performance_schema |
+| stud               |
+| sys                |
++--------------------+
+6 rows in set (0.17 sec)
+
+mysql> use movie;
+Database changed
+mysql> show tables;
++-----------------+
+| Tables_in_movie |
++-----------------+
+| actor           |
+| cast            |
+| corin_m_id      |
+| corin_movie     |
+| direct          |
+| director        |
+| movie           |
+| rating          |
+| yash_movies     |
++-----------------+
+9 rows in set (0.04 sec)
+
+mysql> select * from movie;
++--------+------------+--------------+--------+
+| m_id   | title      | release_date | m_rank |
++--------+------------+--------------+--------+
+| b1l2e3 | Bless      | 2018-10-07   |      4 |
+| dan123 | Dangal     | 2018-09-09   |      8 |
+| g1o2d3 | God        | 2018-10-06   |      3 |
+| k3g123 | K3G        | 1909-01-02   |     11 |
+| pk_123 | PK         | 2017-04-09   |      9 |
+| ram123 | Ram-Lakhan | 1991-02-03   |      7 |
+| sho123 | Sholay     | 1909-01-01   |      6 |
+| t1h2e3 | The Nun    | 2018-09-07   |      1 |
+| v1e2n3 | Venom      | 2018-10-05   |      2 |
+| war123 | War        | 2019-04-09   |     10 |
+| y1o2u3 | You        | 2018-10-08   |      5 |
++--------+------------+--------------+--------+
+11 rows in set (0.05 sec)
+
+mysql> select * from cast;
++--------+--------+---------+
+| m_id   | a_id   | role    |
++--------+--------+---------+
+| g1o2d3 | t1o2m3 | pilot   |
+| b1l2e3 | k1e2a3 | killer  |
+| sho123 | ami123 | cop     |
+| sho123 | san123 | cop     |
+| ram123 | t1o2m3 | tree    |
+| ram123 | k1e2a3 | gun     |
+| war123 | rit123 | Soldier |
+| dan123 | kha123 | wresler |
+| pk_123 | kha123 | alien   |
+| k3g123 | ami123 | grandpa |
+| k3g123 | sha123 | rebel   |
+| k3g123 | rit123 | son     |
+| k3g123 | kaj123 | bride   |
+| k3g123 | kar123 | bride   |
++--------+--------+---------+
+14 rows in set (0.02 sec)
+
+mysql> select * from actor;
++--------+---------+----------+----------+
+| a_id   | fname   | lname    | Pay      |
++--------+---------+----------+----------+
+| ami123 | Amitabh | Bachchan | 10060000 |
+| k1e2a3 | Keanu   | Reeves   |    60000 |
+| kaj123 | Kajol   |          | 20000000 |
+| kar123 | Kareena | Kapoor   | 20000000 |
+| kha123 | Amir    | Khan     | 50000000 |
+| rit123 | Rithik  | Roshan   | 90000000 |
+| san123 | Sanjeev | Kumar    | 10060000 |
+| sha123 | Sharuk  | Khan     | 50000000 |
+| t1o2m3 | Tom     | Cruise   |    60000 |
++--------+---------+----------+----------+
+9 rows in set (0.02 sec)
+
+mysql>
+mysql>
+mysql> select fname, lname from actor
+    -> where a_id in(
+    -> select a_id from cast where m_id in (
+    -> select m_id from movie where title ='Sholay' or title='K3G'));
++---------+----------+
+| fname   | lname    |
++---------+----------+
+| Amitabh | Bachchan |
+| Kajol   |          |
+| Kareena | Kapoor   |
+| Rithik  | Roshan   |
+| Sanjeev | Kumar    |
+| Sharuk  | Khan     |
++---------+----------+
+6 rows in set (0.02 sec)
+
+mysql> select * from direct;
++--------+--------+
+| m_id   | d_id   |
++--------+--------+
+| v1e2n3 | yas123 |
+| t1h2e3 | c1o2r3 |
+| y1o2u3 | yas123 |
+| b1l2e3 | r1u2b3 |
+| g1o2d3 | c1o2r3 |
++--------+--------+
+5 rows in set (0.03 sec)
+
+mysql> select * from director;
++--------+-------+-----------+--------+
+| d_id   | fname | lname     | gender |
++--------+-------+-----------+--------+
+| c1o2r3 | Corin | Hardy     | Male   |
+| cor123 | Corin | Hardy     | Male   |
+| r1u2b3 | Ruben | Fleischer | Male   |
+| rub123 | Ruben | Fleischer | Male   |
+| yas123 | Yash  | Chopra    | Male   |
++--------+-------+-----------+--------+
+5 rows in set (0.03 sec)
+
+mysql>
+mysql>
+mysql>
+mysql> select movie.title, count(*) as actor_count
+    -> from movie, cast
+    -> where movie.m_id = cast.m_id
+    -> group by cast.m_id;
++------------+-------------+
+| title      | actor_count |
++------------+-------------+
+| Bless      |           1 |
+| Dangal     |           1 |
+| God        |           1 |
+| K3G        |           5 |
+| PK         |           1 |
+| Ram-Lakhan |           2 |
+| Sholay     |           2 |
+| War        |           1 |
++------------+-------------+
+8 rows in set (0.01 sec)
+
+mysql>
+mysql>
+mysql> select cast.role
+    -> from cast
+    -> where cast.a_id in (
+    -> select actor.a_id from actor
+    -> where actor.pay > 200000);
++---------+
+| role    |
++---------+
+| grandpa |
+| cop     |
+| bride   |
+| bride   |
+| wresler |
+| alien   |
+| son     |
+| Soldier |
+| cop     |
+| rebel   |
++---------+
+10 rows in set (0.01 sec)
+
+mysql> select * from director;
++--------+-------+-----------+--------+
+| d_id   | fname | lname     | gender |
++--------+-------+-----------+--------+
+| c1o2r3 | Corin | Hardy     | Male   |
+| cor123 | Corin | Hardy     | Male   |
+| r1u2b3 | Ruben | Fleischer | Male   |
+| rub123 | Ruben | Fleischer | Male   |
+| yas123 | Yash  | Chopra    | Male   |
++--------+-------+-----------+--------+
+5 rows in set (0.00 sec)
+
+mysql> select * from direct;
++--------+--------+
+| m_id   | d_id   |
++--------+--------+
+| v1e2n3 | yas123 |
+| t1h2e3 | c1o2r3 |
+| y1o2u3 | yas123 |
+| b1l2e3 | r1u2b3 |
+| g1o2d3 | c1o2r3 |
++--------+--------+
+5 rows in set (0.00 sec)
+
+mysql> update director
+    -> set gender = 'Female'
+    -> where d_id = 'c1o2r3';
+Query OK, 1 row affected (0.05 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> select * from director;
++--------+-------+-----------+--------+
+| d_id   | fname | lname     | gender |
++--------+-------+-----------+--------+
+| c1o2r3 | Corin | Hardy     | Female |
+| cor123 | Corin | Hardy     | Male   |
+| r1u2b3 | Ruben | Fleischer | Male   |
+| rub123 | Ruben | Fleischer | Male   |
+| yas123 | Yash  | Chopra    | Male   |
++--------+-------+-----------+--------+
+5 rows in set (0.00 sec)
+
+mysql>
+mysql> select * from movie
+    -> where movie.m_id in (select direct.m_id from direct, director
+    -> where director.d_id  = direct.d_id and director.gender = 'Female');
++--------+---------+--------------+--------+
+| m_id   | title   | release_date | m_rank |
++--------+---------+--------------+--------+
+| t1h2e3 | The Nun | 2018-09-07   |      1 |
+| g1o2d3 | God     | 2018-10-06   |      3 |
++--------+---------+--------------+--------+
+2 rows in set (0.01 sec)
+
+mysql> select distinct actor.fname, actor.lname, actor.pay, cast.m_id
+    -> from actor, cast
+    -> where (cast.m_id , actor.pay) in (
+    -> select cast.m_id , max(actor.pay) from actor, cast
+    -> where actor.a_id = cast.a_id group by cast.m_id );
++---------+----------+----------+--------+
+| fname   | lname    | pay      | m_id   |
++---------+----------+----------+--------+
+| Tom     | Cruise   |    60000 | b1l2e3 |
+| Keanu   | Reeves   |    60000 | b1l2e3 |
+| Sharuk  | Khan     | 50000000 | dan123 |
+| Amir    | Khan     | 50000000 | dan123 |
+| Tom     | Cruise   |    60000 | g1o2d3 |
+| Keanu   | Reeves   |    60000 | g1o2d3 |
+| Rithik  | Roshan   | 90000000 | k3g123 |
+| Sharuk  | Khan     | 50000000 | pk_123 |
+| Amir    | Khan     | 50000000 | pk_123 |
+| Tom     | Cruise   |    60000 | ram123 |
+| Keanu   | Reeves   |    60000 | ram123 |
+| Sanjeev | Kumar    | 10060000 | sho123 |
+| Amitabh | Bachchan | 10060000 | sho123 |
+| Rithik  | Roshan   | 90000000 | war123 |
++---------+----------+----------+--------+
+14 rows in set (0.02 sec)
+
+mysql> select Movie.title,Movie.release_date,Director.fname,Director.lname from Movie,Director,Direct where Movie.release_date>"2018-12-31" and Movie.release_date < "2020-01-01" and Director.d_id=Direct.d_id and Movie.m_id = Direct.m_id order by release_date DESC LIMIT 5;
+Empty set (0.00 sec)
+
+
+
+
+
+
+
+mysql> SELECT * FROM MOVIE NATURAL JOIN DIRECT NATURAL JOIN DIRECTOR WHERE DIRECTOR.fname="Karan" AND DIRECTOR.lname="Johar";
+Empty set (0.02 sec)
+
+mysql> SELECT ACTOR.fname, ACTOR.lname, CAST.role FROM ACTOR CROSS JOIN CAST;
++---------+----------+---------+
+| fname   | lname    | role    |
++---------+----------+---------+
+| Tom     | Cruise   | pilot   |
+| Sharuk  | Khan     | pilot   |
+| Sanjeev | Kumar    | pilot   |
+| Rithik  | Roshan   | pilot   |
+| Amir    | Khan     | pilot   |
+| Kareena | Kapoor   | pilot   |
+| Kajol   |          | pilot   |
+| Keanu   | Reeves   | pilot   |
+| Amitabh | Bachchan | pilot   |
+| Tom     | Cruise   | killer  |
+| Sharuk  | Khan     | killer  |
+| Sanjeev | Kumar    | killer  |
+| Rithik  | Roshan   | killer  |
+| Amir    | Khan     | killer  |
+| Kareena | Kapoor   | killer  |
+| Kajol   |          | killer  |
+| Keanu   | Reeves   | killer  |
+| Amitabh | Bachchan | killer  |
+| Tom     | Cruise   | cop     |
+| Sharuk  | Khan     | cop     |
+| Sanjeev | Kumar    | cop     |
+| Rithik  | Roshan   | cop     |
+| Amir    | Khan     | cop     |
+| Kareena | Kapoor   | cop     |
+| Kajol   |          | cop     |
+| Keanu   | Reeves   | cop     |
+| Amitabh | Bachchan | cop     |
+| Tom     | Cruise   | cop     |
+| Sharuk  | Khan     | cop     |
+| Sanjeev | Kumar    | cop     |
+| Rithik  | Roshan   | cop     |
+| Amir    | Khan     | cop     |
+| Kareena | Kapoor   | cop     |
+| Kajol   |          | cop     |
+| Keanu   | Reeves   | cop     |
+| Amitabh | Bachchan | cop     |
+| Tom     | Cruise   | tree    |
+| Sharuk  | Khan     | tree    |
+| Sanjeev | Kumar    | tree    |
+| Rithik  | Roshan   | tree    |
+| Amir    | Khan     | tree    |
+| Kareena | Kapoor   | tree    |
+| Kajol   |          | tree    |
+| Keanu   | Reeves   | tree    |
+| Amitabh | Bachchan | tree    |
+| Tom     | Cruise   | gun     |
+| Sharuk  | Khan     | gun     |
+| Sanjeev | Kumar    | gun     |
+| Rithik  | Roshan   | gun     |
+| Amir    | Khan     | gun     |
+| Kareena | Kapoor   | gun     |
+| Kajol   |          | gun     |
+| Keanu   | Reeves   | gun     |
+| Amitabh | Bachchan | gun     |
+| Tom     | Cruise   | Soldier |
+| Sharuk  | Khan     | Soldier |
+| Sanjeev | Kumar    | Soldier |
+| Rithik  | Roshan   | Soldier |
+| Amir    | Khan     | Soldier |
+| Kareena | Kapoor   | Soldier |
+| Kajol   |          | Soldier |
+| Keanu   | Reeves   | Soldier |
+| Amitabh | Bachchan | Soldier |
+| Tom     | Cruise   | wresler |
+| Sharuk  | Khan     | wresler |
+| Sanjeev | Kumar    | wresler |
+| Rithik  | Roshan   | wresler |
+| Amir    | Khan     | wresler |
+| Kareena | Kapoor   | wresler |
+| Kajol   |          | wresler |
+| Keanu   | Reeves   | wresler |
+| Amitabh | Bachchan | wresler |
+| Tom     | Cruise   | alien   |
+| Sharuk  | Khan     | alien   |
+| Sanjeev | Kumar    | alien   |
+| Rithik  | Roshan   | alien   |
+| Amir    | Khan     | alien   |
+| Kareena | Kapoor   | alien   |
+| Kajol   |          | alien   |
+| Keanu   | Reeves   | alien   |
+| Amitabh | Bachchan | alien   |
+| Tom     | Cruise   | grandpa |
+| Sharuk  | Khan     | grandpa |
+| Sanjeev | Kumar    | grandpa |
+| Rithik  | Roshan   | grandpa |
+| Amir    | Khan     | grandpa |
+| Kareena | Kapoor   | grandpa |
+| Kajol   |          | grandpa |
+| Keanu   | Reeves   | grandpa |
+| Amitabh | Bachchan | grandpa |
+| Tom     | Cruise   | rebel   |
+| Sharuk  | Khan     | rebel   |
+| Sanjeev | Kumar    | rebel   |
+| Rithik  | Roshan   | rebel   |
+| Amir    | Khan     | rebel   |
+| Kareena | Kapoor   | rebel   |
+| Kajol   |          | rebel   |
+| Keanu   | Reeves   | rebel   |
+| Amitabh | Bachchan | rebel   |
+| Tom     | Cruise   | son     |
+| Sharuk  | Khan     | son     |
+| Sanjeev | Kumar    | son     |
+| Rithik  | Roshan   | son     |
+| Amir    | Khan     | son     |
+| Kareena | Kapoor   | son     |
+| Kajol   |          | son     |
+| Keanu   | Reeves   | son     |
+| Amitabh | Bachchan | son     |
+| Tom     | Cruise   | bride   |
+| Sharuk  | Khan     | bride   |
+| Sanjeev | Kumar    | bride   |
+| Rithik  | Roshan   | bride   |
+| Amir    | Khan     | bride   |
+| Kareena | Kapoor   | bride   |
+| Kajol   |          | bride   |
+| Keanu   | Reeves   | bride   |
+| Amitabh | Bachchan | bride   |
+| Tom     | Cruise   | bride   |
+| Sharuk  | Khan     | bride   |
+| Sanjeev | Kumar    | bride   |
+| Rithik  | Roshan   | bride   |
+| Amir    | Khan     | bride   |
+| Kareena | Kapoor   | bride   |
+| Kajol   |          | bride   |
+| Keanu   | Reeves   | bride   |
+| Amitabh | Bachchan | bride   |
++---------+----------+---------+
+126 rows in set (0.02 sec)
+
+mysql>
+mysql>
+mysql>
+mysql> SELECT MOVIE.title, MOVIE.m_rank, MOVIE.release_date, Director.fname, Director.lname FROM MOVIE
+    -> LEFT JOIN DIRECT ON DIRECT.m_id = MOVIE.m_id
+    -> LEFT JOIN DIRECTOR ON DIRECT.d_id = DIRECTOR.d_id
+    -> WHERE MOVIE.release_date > '2018-12-31' and MOVIE.release_date < '2020-01-01';
++-------+--------+--------------+-------+-------+
+| title | m_rank | release_date | fname | lname |
++-------+--------+--------------+-------+-------+
+| War   |     10 | 2019-04-09   | NULL  | NULL  |
++-------+--------+--------------+-------+-------+
+1 row in set (0.01 sec)
+
+mysql> SELECT DISTINCT ACTOR.fname, ACTOR.lname, ACTOR.pay FROM ACTOR
+    -> RIGHT JOIN CAST ON CAST.a_id = ACTOR.a_id
+    -> RIGHT JOIN MOVIE ON CAST.m_id = MOVIE.m_id
+    -> WHERE NOT ACTOR.a_id IN(SELECT ACTOR.a_id FROM ACTOR, CAST, MOVIE WHERE CAST.a_id = ACTOR.a_id
+    -> AND MOVIE.m_id = CAST.m_id AND MOVIE.title = "Dangal");
++---------+----------+----------+
+| fname   | lname    | pay      |
++---------+----------+----------+
+| Keanu   | Reeves   |    60000 |
+| Tom     | Cruise   |    60000 |
+| Amitabh | Bachchan | 10060000 |
+| Sharuk  | Khan     | 50000000 |
+| Rithik  | Roshan   | 90000000 |
+| Kajol   |          | 20000000 |
+| Kareena | Kapoor   | 20000000 |
+| Sanjeev | Kumar    | 10060000 |
++---------+----------+----------+
+8 rows in set (0.02 sec)
+
+mysql>
+
+mysql>
+mysql> select actor.fname, actor.lname, actor.pay, movie.title, movie.release_date
+    -> from actor, movie, cast
+    -> where actor.a_id = cast.a_id and movie.m_id = cast.m_id
+    -> and not movie.m_id in (
+    -> select movie.m_id from movie where title = 'Shakuntala Devi')
+    -> UNION
+    -> select actor.fname, actor.lname, actor.pay, movie.title, movie.release_date
+    -> from actor, movie, cast
+    -> where actor.a_id = cast.a_id and movie.m_id = cast.m_id
+    -> and not actor.a_id in (
+    -> select actor.a_id from actor where fname = 'Amitabh' and lname = 'Bachchan');
++---------+----------+----------+------------+--------------+
+| fname   | lname    | pay      | title      | release_date |
++---------+----------+----------+------------+--------------+
+| Amitabh | Bachchan | 10060000 | K3G        | 1909-01-02   |
+| Amitabh | Bachchan | 10060000 | Sholay     | 1909-01-01   |
+| Keanu   | Reeves   |    60000 | Bless      | 2018-10-07   |
+| Keanu   | Reeves   |    60000 | Ram-Lakhan | 1991-02-03   |
+| Kajol   |          | 20000000 | K3G        | 1909-01-02   |
+| Kareena | Kapoor   | 20000000 | K3G        | 1909-01-02   |
+| Amir    | Khan     | 50000000 | Dangal     | 2018-09-09   |
+| Amir    | Khan     | 50000000 | PK         | 2017-04-09   |
+| Rithik  | Roshan   | 90000000 | K3G        | 1909-01-02   |
+| Rithik  | Roshan   | 90000000 | War        | 2019-04-09   |
+| Sanjeev | Kumar    | 10060000 | Sholay     | 1909-01-01   |
+| Sharuk  | Khan     | 50000000 | K3G        | 1909-01-02   |
+| Tom     | Cruise   |    60000 | God        | 2018-10-06   |
+| Tom     | Cruise   |    60000 | Ram-Lakhan | 1991-02-03   |
++---------+----------+----------+------------+--------------+
+14 rows in set (0.02 sec)
+
+mysql>

@@ -1,0 +1,375 @@
+Enter password: ****
+Welcome to the MySQL monitor.  Commands end with ; or \g.
+Your MySQL connection id is 8
+Server version: 8.0.25 MySQL Community Server - GPL
+
+Copyright (c) 2000, 2021, Oracle and/or its affiliates.
+
+Oracle is a registered trademark of Oracle Corporation and/or its
+affiliates. Other names may be trademarks of their respective
+owners.
+
+Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+
+mysql> show databases;
++--------------------+
+| Database           |
++--------------------+
+| information_schema |
+| movie              |
+| mysql              |
+| performance_schema |
+| stud               |
+| sys                |
++--------------------+
+6 rows in set (0.07 sec)
+
+mysql> use movie;
+Database changed
+mysql>
+mysql> show tables;
++-----------------+
+| Tables_in_movie |
++-----------------+
+| actor           |
+| cast            |
+| direct          |
+| director        |
+| movie           |
++-----------------+
+5 rows in set (0.04 sec)
+
+mysql> select * from movie;
++--------+---------+--------------+--------+
+| m_id   | title   | release_date | m_rank |
++--------+---------+--------------+--------+
+| b1l2e3 | Bless   | 2018-10-07   |      4 |
+| g1o2d3 | God     | 2018-10-06   |      3 |
+| t1h2e3 | The Nun | 2018-09-07   |      1 |
+| v1e2n3 | Venom   | 2018-10-05   |      2 |
+| y1o2u3 | You     | 2018-10-08   |      5 |
++--------+---------+--------------+--------+
+5 rows in set (0.04 sec)
+
+mysql> select * from director;
++--------+-------+-----------+--------+
+| d_id   | fname | lname     | gender |
++--------+-------+-----------+--------+
+| c1o2r3 | Corin | Hardy     | Male   |
+| r1u2b3 | Ruben | Fleischer | Male   |
++--------+-------+-----------+--------+
+2 rows in set (0.02 sec)
+
+mysql> select * from direct;
++--------+--------+
+| m_id   | d_id   |
++--------+--------+
+| v1e2n3 | r1u2b3 |
+| t1h2e3 | c1o2r3 |
++--------+--------+
+2 rows in set (0.02 sec)
+
+mysql> select * from cast;
+Empty set (0.01 sec)
+
+mysql> select * from actor;
++--------+-------+--------+
+| a_id   | fname | lname  |
++--------+-------+--------+
+| k1e2a3 | Keanu | Reeves |
+| t1o2m3 | Tom   | Cruise |
++--------+-------+--------+
+2 rows in set (0.02 sec)
+
+mysql>
+mysql> insert into direct
+    -> values ('y1o2u3', 'r1u2b3');
+Query OK, 1 row affected (0.03 sec)
+
+mysql> insert into direct
+    -> values ('b1l2e3', 'c1o2r3');
+Query OK, 1 row affected (0.02 sec)
+
+mysql> insert into direct
+    -> values ('g1o2d3', 'c1o2r3');
+Query OK, 1 row affected (0.01 sec)
+
+mysql>
+mysql>
+mysql> select * from direct;
++--------+--------+
+| m_id   | d_id   |
++--------+--------+
+| v1e2n3 | r1u2b3 |
+| t1h2e3 | c1o2r3 |
+| y1o2u3 | r1u2b3 |
+| b1l2e3 | c1o2r3 |
+| g1o2d3 | c1o2r3 |
++--------+--------+
+5 rows in set (0.00 sec)
+
+mysql>  alter table movie
+    -> set m_rank = 1
+    -> where m_id = 'g1o2d3';
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'set m_rank = 1
+where m_id = 'g1o2d3'' at line 2
+mysql>
+mysql>
+mysql>  alter table movie
+    -> set m_rank = 1
+    -> where m_id = 'g1o2d3';
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'set m_rank = 1
+where m_id = 'g1o2d3'' at line 2
+mysql>
+mysql>
+mysql>
+mysql> update table movie
+    -> set m_rank = 1
+    -> where m_id = 'g1o2d3';
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'table movie
+set m_rank = 1
+where m_id = 'g1o2d3'' at line 1
+mysql> update movie
+    -> set m_rank = 1
+    -> where m_id = 'g1o2d3';
+Query OK, 1 row affected (0.01 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> select * from movie;
++--------+---------+--------------+--------+
+| m_id   | title   | release_date | m_rank |
++--------+---------+--------------+--------+
+| b1l2e3 | Bless   | 2018-10-07   |      4 |
+| g1o2d3 | God     | 2018-10-06   |      1 |
+| t1h2e3 | The Nun | 2018-09-07   |      1 |
+| v1e2n3 | Venom   | 2018-10-05   |      2 |
+| y1o2u3 | You     | 2018-10-08   |      5 |
++--------+---------+--------------+--------+
+5 rows in set (0.01 sec)
+
+mysql> create view [Corin Movies] as
+    -> select m_id, title
+    -> from movie
+    -> where m_id = (select m_id from direct where d_id = 'c1o2r3');
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '[Corin Movies] as
+select m_id, title
+from movie
+where m_id = (select m_id from d' at line 1
+mysql>
+mysql>
+mysql>
+mysql> create view [Corin Movies] as
+    -> select m_id, title
+    -> from movie
+    -> where m_id = (select id(m_id) from direct where d_id = 'c1o2r3');
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '[Corin Movies] as
+select m_id, title
+from movie
+where m_id = (select id(m_id) fr' at line 1
+mysql>
+mysql>
+mysql>
+mysql> create view [Corin Movies] as
+    -> select m_id, title
+    -> where movie.m_id = (select m_id from direct where d_id = 'c1o2r3');
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '[Corin Movies] as
+select m_id, title
+where movie.m_id = (select m_id from direct' at line 1
+mysql>
+mysql>
+mysql> create view [Corin Movies] as
+    -> select m_id, title
+    -> ;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '[Corin Movies] as
+select m_id, title' at line 1
+mysql>
+mysql>
+mysql>
+mysql> create view [Corin M_id] as
+    -> select m_id
+    -> where ;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '[Corin M_id] as
+select m_id
+where' at line 1
+mysql>
+mysql>
+mysql>
+mysql>
+mysql> create view [Corin] as
+    -> select movie.m_id, direct.d_id, movie.title
+    -> where movie.m_id = direct.d_id and direct.d_id = 'c1o2r3';
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '[Corin] as
+select movie.m_id, direct.d_id, movie.title
+where movie.m_id = direct' at line 1
+mysql>
+mysql>
+mysql>
+mysql>
+mysql> create view Corin as
+    -> select movie.m_id, direct.d_id, movie.title
+    -> where movie.m_id = direct.d_id and direct.d_id = 'c1o2r3';
+ERROR 1109 (42S02): Unknown table 'movie' in field list
+mysql>
+mysql>
+mysql>
+mysql> create view Corin_Movies as
+    -> select m_id, title
+    -> where movie.m_id = (select m_id from direct where d_id = 'c1o2r3');
+ERROR 1054 (42S22): Unknown column 'm_id' in 'field list'
+mysql>
+mysql>
+mysql>
+mysql>
+mysql> create view Corin_m_id as
+    -> select m_id
+    -> from direct
+    -> where d_id = 'c1o2r3';
+Query OK, 0 rows affected (0.03 sec)
+
+mysql>
+mysql>
+mysql> select * from Corin_m_id;
++--------+
+| m_id   |
++--------+
+| t1h2e3 |
+| b1l2e3 |
+| g1o2d3 |
++--------+
+3 rows in set (0.01 sec)
+
+mysql> create view Corin as select movie.m_id, direct.d_id, movie.title
+    -> from movie, direct
+    -> where movie.m_id = direct.m_id and direct.d_id = 'c1o2r3';
+Query OK, 0 rows affected (0.02 sec)
+
+mysql>
+mysql>
+mysql>
+mysql> select * from corin;
++--------+--------+---------+
+| m_id   | d_id   | title   |
++--------+--------+---------+
+| b1l2e3 | c1o2r3 | Bless   |
+| g1o2d3 | c1o2r3 | God     |
+| t1h2e3 | c1o2r3 | The Nun |
++--------+--------+---------+
+3 rows in set (0.01 sec)
+
+mysql> alter view Corin as select movie.m_id, direct.d_id, movie.title, movie.m_rank
+    -> from movie, direct
+    -> where (movie.m_id = direct.m_id and direct.d_id = 'c1o2r3') and movie.m_rank = 1;
+Query OK, 0 rows affected (0.01 sec)
+
+mysql>
+mysql>
+mysql>
+mysql> select * from corin;
++--------+--------+---------+--------+
+| m_id   | d_id   | title   | m_rank |
++--------+--------+---------+--------+
+| g1o2d3 | c1o2r3 | God     |      1 |
+| t1h2e3 | c1o2r3 | The Nun |      1 |
++--------+--------+---------+--------+
+2 rows in set (0.00 sec)
+
+mysql>
+mysql>
+mysql>
+mysql> rename table corin
+    -> to Corin_Movie;
+Query OK, 0 rows affected (0.02 sec)
+
+mysql>
+mysql>
+mysql> select * from corin;
+ERROR 1146 (42S02): Table 'movie.corin' doesn't exist
+mysql>
+mysql>
+mysql> select * from corin_movie;
++--------+--------+---------+--------+
+| m_id   | d_id   | title   | m_rank |
++--------+--------+---------+--------+
+| g1o2d3 | c1o2r3 | God     |      1 |
+| t1h2e3 | c1o2r3 | The Nun |      1 |
++--------+--------+---------+--------+
+2 rows in set (0.02 sec)
+
+mysql> ^C
+mysql> ^C
+mysql>
+mysql> update ^C
+mysql>
+mysql>
+mysql>
+mysql>
+mysql> insert into corin_movie(m_id, d_id, title, m_rank)
+    -> values ('m1o2h3', 's1a2i3', 'king', 1);
+ERROR 1393 (HY000): Can not modify more than one base table through a join view 'movie.corin_movie'
+mysql>
+mysql>
+mysql> describe movie;
++--------------+-------------+------+-----+---------+-------+
+| Field        | Type        | Null | Key | Default | Extra |
++--------------+-------------+------+-----+---------+-------+
+| m_id         | varchar(20) | NO   | PRI | NULL    |       |
+| title        | varchar(30) | NO   |     | NULL    |       |
+| release_date | date        | NO   |     | NULL    |       |
+| m_rank       | int         | NO   |     | NULL    |       |
++--------------+-------------+------+-----+---------+-------+
+4 rows in set (0.03 sec)
+
+mysql> describe director;
++--------+-------------+------+-----+---------+-------+
+| Field  | Type        | Null | Key | Default | Extra |
++--------+-------------+------+-----+---------+-------+
+| d_id   | varchar(20) | NO   | PRI | NULL    |       |
+| fname  | varchar(10) | NO   |     | NULL    |       |
+| lname  | varchar(10) | NO   |     | NULL    |       |
+| gender | varchar(10) | NO   |     | NULL    |       |
++--------+-------------+------+-----+---------+-------+
+4 rows in set (0.00 sec)
+
+mysql> describe direct;
++-------+-------------+------+-----+---------+-------+
+| Field | Type        | Null | Key | Default | Extra |
++-------+-------------+------+-----+---------+-------+
+| m_id  | varchar(20) | NO   | MUL | NULL    |       |
+| d_id  | varchar(20) | NO   | MUL | NULL    |       |
++-------+-------------+------+-----+---------+-------+
+2 rows in set (0.00 sec)
+
+mysql> create index acter_idx
+    -> on actor (fname, lname);
+Query OK, 0 rows affected (0.08 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+
+mysql>
+mysql> show indexes from actor;
++-------+------------+-----------+--------------+-------------+-----------+-------------+----------+--------+------+------------+---------+---------------+---------+------------+
+| Table | Non_unique | Key_name  | Seq_in_index | Column_name | Collation | Cardinality | Sub_part | Packed | Null | Index_type | Comment | Index_comment | Visible | Expression |
++-------+------------+-----------+--------------+-------------+-----------+-------------+----------+--------+------+------------+---------+---------------+---------+------------+
+| actor |          0 | PRIMARY   |            1 | a_id        | A         |           2 |     NULL |   NULL |      | BTREE      |         |               | YES     | NULL       |
+| actor |          1 | acter_idx |            1 | fname       | A         |           2 |     NULL |   NULL |      | BTREE      |         |               | YES     | NULL       |
+| actor |          1 | acter_idx |            2 | lname       | A         |           2 |     NULL |   NULL |      | BTREE      |         |               | YES     | NULL       |
++-------+------------+-----------+--------------+-------------+-----------+-------------+----------+--------+------+------------+---------+---------------+---------+------------+
+3 rows in set (0.03 sec)
+
+mysql>
+mysql>
+mysql> drop index acter_idx on actor;
+Query OK, 0 rows affected (0.04 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql>
+mysql>
+mysql> show indexes from actor;
++-------+------------+----------+--------------+-------------+-----------+-------------+----------+--------+------+------------+---------+---------------+---------+------------+
+| Table | Non_unique | Key_name | Seq_in_index | Column_name | Collation | Cardinality | Sub_part | Packed | Null | Index_type | Comment | Index_comment | Visible | Expression |
++-------+------------+----------+--------------+-------------+-----------+-------------+----------+--------+------+------------+---------+---------------+---------+------------+
+| actor |          0 | PRIMARY  |            1 | a_id        | A         |           2 |     NULL |   NULL |      | BTREE      |         |               | YES     | NULL       |
++-------+------------+----------+--------------+-------------+-----------+-------------+----------+--------+------+------------+---------+---------------+---------+------------+
+1 row in set (0.00 sec)
+
+mysql>
